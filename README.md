@@ -2,6 +2,12 @@
 
 
 
+## About ReMine - Reminder App
+
+Todo Reminder - Aplikasi pengingat tugas yang bikin hidup lebih terorganisir! 📝 Dilengkapi reminder WhatsApp otomatis, dashboard keren, dan sistem admin untuk monitoring. Dibuat dengan Laravel 12 + Tailwind CSS.
+
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -16,7 +22,4 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## ReMine - Reminder App
-
-Todo Reminder - Aplikasi pengingat tugas yang bikin hidup lebih terorganisir! 📝 Dilengkapi reminder WhatsApp otomatis, dashboard keren, dan sistem admin untuk monitoring. Dibuat dengan Laravel 12 + Tailwind CSS.
 
