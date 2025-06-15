@@ -92,10 +92,38 @@ class AuthController extends Controller
             ]);
 
         } catch (ValidationException $e) {
+            $errors = $e->errors();
+            $message = 'Data tidak valid.';
+        
+            // Prioritaskan pesan error spesifik
+            if (isset($errors['name'])) {
+                $message = $errors['name'][0];
+            } elseif (isset($errors['email'])) {
+                if (str_contains($errors['email'][0], 'taken')) {
+                    $message = 'Email sudah terdaftar.';
+                } else {
+                    $message = $errors['email'][0];
+                }
+            } elseif (isset($errors['telepon'])) {
+                if (str_contains($errors['telepon'][0], 'taken')) {
+                    $message = 'Nomor WhatsApp sudah terdaftar.';
+                } else {
+                    $message = $errors['telepon'][0];
+                }
+            } elseif (isset($errors['password'])) {
+                if (str_contains($errors['password'][0], 'confirmation')) {
+                    $message = 'Password dan konfirmasi password tidak sama.';
+                } else {
+                    $message = $errors['password'][0];
+                }
+            } elseif (isset($errors['password_confirmation'])) {
+                $message = $errors['password_confirmation'][0];
+            }
+        
             return response()->json([
                 'success' => false,
-                'message' => 'Data tidak valid.',
-                'errors' => $e->errors()
+                'message' => $message,
+                'errors' => $errors
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
