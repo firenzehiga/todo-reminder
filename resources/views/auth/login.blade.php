@@ -131,6 +131,7 @@
                             title: 'Login Berhasil!',
                             text: 'Selamat datang kembali 👋',
                             timer: 2000,
+                            toast: true,
                             showConfirmButton: false
                         }).then(() => {
                             window.location.href = data.redirect;

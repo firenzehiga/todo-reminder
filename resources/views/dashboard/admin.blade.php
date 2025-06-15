@@ -24,12 +24,9 @@
                             Semua Todo
                         </a>
                         <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="text-sm text-red-600 hover:text-red-800">
-                                Logout
-                            </button>
-                        </form>
+                        <button class="text-sm text-red-600 hover:text-red-800" onclick="confirmLogout()">
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
@@ -175,4 +172,65 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Yakin mau logout?',
+                text: 'Anda akan keluar dari aplikasi',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Logout',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading
+                    Swal.fire({
+                        title: 'Logging out...',
+                        text: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Perform logout
+                    fetch('{{ route('logout') }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content'),
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Logout Berhasil!',
+                                    text: 'Sampai jumpa lagi! 👋',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    window.location.href = data.redirect;
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Terjadi kesalahan saat logout',
+                                confirmButtonText: 'OK'
+                            });
+                        });
+                }
+            });
+        }
+    </script>
 @endsection
