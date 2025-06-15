@@ -1,74 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
+    <style>
+        @media (max-width: 767px) {
+            .register-bg {
+                background-image: none !important;
+                background-color: #f3f4f6 !important;
+                /* Tailwind gray-100 */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .register-bg {
+                background-image: url('/images/bg5.jpg');
+                background-size: cover;
+                background-position: right;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: transparent;
+            }
+
+            .bg-color {
+                background-color: #fff !important;
+            }
+        }
+    </style>
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 register-bg">
+
+        <div class="max-w-2xl w-full space-y-8">
             <div class="text-center">
-                <!-- Logo placeholder -->
-                <div class="mx-auto h-16 w-16 bg-primary-500 rounded-full flex items-center justify-center mb-6">
-                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
-                        </path>
-                    </svg>
-                </div>
-                <h2 class="text-3xl font-bold text-gray-900">Buat Akun Todo Reminder</h2>
+
+                <h2 class="text-2xl font-bold text-gray-900">Buat Akun ReMine</h2>
                 <p class="mt-2 text-sm text-gray-600">Kelola tugas dan reminder Anda dengan mudah</p>
             </div>
 
-            <div class="bg-white py-8 px-6 shadow-lg rounded-lg">
+            <div class="bg-white py-2 px-6 shadow-lg rounded-lg border-2">
                 <form id="registerForm" class="space-y-6">
                     @csrf
 
-                    <!-- Name -->
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nama Lengkap
-                        </label>
-                        <input id="name" name="name" type="text" autocomplete="name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="Masukkan nama lengkap">
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-0">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nama Lengkap
+                            </label>
+                            <input id="name" name="name" type="text" autocomplete="name" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="Masukkan nama lengkap">
+                        </div>
 
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email
-                        </label>
-                        <input id="email" name="email" type="email" autocomplete="email" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="nama@email.com">
-                    </div>
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email
+                            </label>
+                            <input id="email" name="email" type="email" autocomplete="email" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="nama@email.com">
+                        </div>
 
-                    <!-- Telepon -->
-                    <div>
-                        <label for="telepon" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nomor WhatsApp <span class="text-gray-400">(untuk reminder)</span>
-                        </label>
-                        <input id="telepon" name="telepon" type="tel" autocomplete="tel"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="08123456789">
-                    </div>
+                        <!-- Telepon -->
+                        <div>
+                            <label for="telepon" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nomor WhatsApp <span class="text-gray-400">(untuk reminder)</span>
+                            </label>
+                            <input id="telepon" name="telepon" type="tel" autocomplete="tel"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="08123456789">
+                        </div>
 
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                            Password
-                        </label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="Minimal 8 karakter">
-                    </div>
+                        <!-- Confirm Password (full width) -->
 
-                    <!-- Confirm Password -->
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
-                            Konfirmasi Password
-                        </label>
-                        <input id="password_confirmation" name="password_confirmation" type="password"
-                            autocomplete="new-password" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="Ulangi password">
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                Password
+                            </label>
+                            <input id="password" name="password" type="password" autocomplete="new-password" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="Minimal 8 karakter">
+                        </div>
+                        <div>
+                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
+                                Konfirmasi Password
+                            </label>
+                            <input id="password_confirmation" name="password_confirmation" type="password"
+                                autocomplete="new-password" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="Ulangi password">
+                        </div>
                     </div>
 
                     <!-- Submit Button -->

@@ -6,6 +6,7 @@ use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Carbon\Carbon;
 
 
 class TodoController extends Controller
@@ -103,6 +104,38 @@ class TodoController extends Controller
         return response()->json(['success' => true, 'status' => $todo->status]);
     }
 
+    public function kirimReminderTodo()
+{
+    $today = now()->format('Y-m-d');
+    $todayTime = strtotime($today);
+    $twoDaysLater = now()->addDays(2)->format('Y-m-d');
+
+    // Ambil semua todo yang due date-nya hari ini atau H-2 (2 hari lagi)
+    $todos = Todo::where('status', 'pending')
+        ->whereBetween('due_date', [$today, $twoDaysLater])
+        ->get();
+
+    foreach ($todos as $todo) {
+        $user = $todo->user->name ?? 'User';
+        $dueDate = \Carbon\Carbon::parse($todo->due_date);
+        $selisihTanggal = strtotime($dueDate->format('Y-m-d')) - $todayTime;
+        $selisihHari = $selisihTanggal / 86400;
+
+        if ($selisihHari == 0) {
+            $pesan = "*Reminder Todo ⚠*\nHalo, $user.\n\nHari ini adalah batas waktu todo Anda: *{$todo->title}*.\nSegera selesaikan agar tidak terlewat!\n\nTerima kasih 🙏";
+        } elseif ($selisihHari == 1) {
+            $pesan = "*Reminder Todo*\nHalo, $user.\n\nBesok adalah batas waktu todo Anda: *{$todo->title}*.\nJangan lupa diselesaikan ya!\n\nSemangat!";
+        } elseif ($selisihHari == 2) {
+            $pesan = "*Reminder Todo*\nHalo, $user.\n\n2 hari lagi adalah batas waktu todo Anda: *{$todo->title}*.\nJangan lupa diselesaikan ya!\n\nSemangat!";
+        } else {
+            continue; // Lewati jika bukan hari ini atau H-2
+        }
+
+        $this->sendMessage($todo->user->telepon, $pesan);
+    }
+
+    return response('Reminder todo selesai dijalankan.', 200);
+}
     public function sendMessage($nomor, $pesan)
     {
         // Kirim pesan ke nomor telepon mengugunakan API Wablas
@@ -134,5 +167,9 @@ class TodoController extends Controller
 
         
     }
+
+
+
+    
 
 }

@@ -48,3 +48,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/todos', [AdminController::class, 'todos'])->name('admin.todos');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 });
+
+Route::get('/reminder/todo', [TodoController::class, 'kirimReminderTodo']);

@@ -1,7 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <style>
+        @media (max-width: 767px) {
+            .login-bg {
+                background-image: none !important;
+                background-color: #f3f4f6 !important;
+                /* Tailwind gray-100 */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .login-bg {
+                background-image: url('/images/bg5.jpg');
+                background-size: cover;
+                background-position: right;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-color: transparent;
+            }
+
+            .bg-color {
+                background-color: #fff !important;
+            }
+        }
+    </style>
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 login-bg">
+
         <div class="max-w-md w-full space-y-8">
             <div class="text-center">
                 <!-- Logo placeholder -->
@@ -12,11 +37,11 @@
                         </path>
                     </svg>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900">Masuk ke Todo Reminder</h2>
+                <h2 class="text-2xl font-bold text-gray-900">Masuk ke ReMine</h2>
                 <p class="mt-2 text-sm text-gray-600">Kelola tugas dan reminder Anda</p>
             </div>
 
-            <div class="bg-white py-8 px-6 shadow-lg rounded-lg">
+            <div class="bg-white border-2 py-4 px-6 shadow-lg rounded-lg">
                 <form id="loginForm" class="space-y-6">
                     @csrf
 
@@ -40,14 +65,14 @@
                             placeholder="Masukkan password">
                     </div>
 
-                    <!-- Remember Me -->
+                    {{-- <!-- Remember Me -->
                     <div class="flex items-center">
                         <input id="remember" name="remember" type="checkbox"
                             class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
                         <label for="remember" class="ml-2 block text-sm text-gray-700">
                             Ingat saya
                         </label>
-                    </div>
+                    </div> --}}
 
                     <!-- Submit Button -->
                     <div>
@@ -70,7 +95,7 @@
                         <p class="text-sm text-gray-600">
                             Belum punya akun?
                             <a href="{{ route('register') }}" class="font-medium text-primary-600 hover:text-primary-500">
-                                Daftar Todo Reminder
+                                Daftar Akun
                             </a>
                         </p>
                     </div>
