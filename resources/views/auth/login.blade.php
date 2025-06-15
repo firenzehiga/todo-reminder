@@ -1,3 +1,4 @@
+@section('title', 'ReMine | Reminder App')
 @extends('layouts.app')
 
 @section('content')
