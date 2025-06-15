@@ -17,12 +17,12 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-// Auth routes
+// Auth routes - PASTIKAN TIDAK ADA MIDDLEWARE YANG CONFLICT
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']); // PASTIKAN INI BISA TERIMA JSON
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register']); // PASTIKAN INI BISA TERIMA JSON
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -31,8 +31,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'user'])->name('dashboard');
     
-    // Todo routes - simple
+    // Todo routes
     Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
+    Route::get('/todos/{todo}', [TodoController::class, 'show'])->name('todos.show');
     Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
     Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
     Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
