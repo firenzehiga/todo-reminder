@@ -6,6 +6,7 @@
         <nav class="bg-white shadow-sm border-b">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
+                    <!-- Logo & Brand -->
                     <div class="flex items-center">
                         <div class="h-8 w-8 bg-primary-500 rounded-full flex items-center justify-center">
                             <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,12 +17,69 @@
                         </div>
                         <span class="ml-3 text-xl font-semibold text-gray-900">Todo Reminder</span>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <a href="{{ route('todos.index') }}" class="text-sm text-gray-700 hover:text-primary-600">
+
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a href="{{ route('todos.index') }}"
+                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Kelola Todo
                         </a>
                         <span class="text-sm text-gray-700">Halo, {{ Auth::user()->name }}</span>
-                        <button onclick="confirmLogout()" class="text-sm text-red-600 hover:text-red-800">
+                        <button onclick="confirmLogout()"
+                            class="text-sm text-red-600 hover:text-red-800 px-3 py-2 rounded-md">
+                            Logout
+                        </button>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center">
+                        <button onclick="toggleMobileMenu()"
+                            class="text-gray-700 hover:text-primary-600 focus:outline-none focus:text-primary-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 md:hidden">
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <div class="h-8 w-8 bg-primary-500 rounded-full flex items-center justify-center">
+                                <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span class="ml-3 text-lg font-semibold text-gray-900">Menu</span>
+                        </div>
+                        <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-primary-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="px-3 py-2 text-sm text-gray-600 border-b">
+                            Halo, {{ Auth::user()->name }}
+                        </div>
+                        <a href="{{ route('dashboard') }}"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+                            Dashboard
+                        </a>
+                        <a href="{{ route('todos.index') }}"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+                            Kelola Todo
+                        </a>
+                        <button onclick="confirmLogout()"
+                            class="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
                             Logout
                         </button>
                     </div>

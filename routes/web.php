@@ -38,6 +38,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
     Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
     Route::post('/todos/{todo}/toggle', [TodoController::class, 'toggle'])->name('todos.toggle');
+    Route::post('/todos/{todo}/reminder-group', [TodoController::class, 'kirimReminderGroup'])
+    ->name('todos.reminder-group');
 });
 
 // Admin routes

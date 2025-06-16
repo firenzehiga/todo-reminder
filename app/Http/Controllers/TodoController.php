@@ -104,6 +104,30 @@ class TodoController extends Controller
         return response()->json(['success' => true, 'status' => $todo->status]);
     }
 
+    public function kirimReminderGroup($id)
+{
+    $todo = Todo::findOrFail($id);
+
+    // Contoh pesan tanpa nama user
+    $dueDate = \Carbon\Carbon::parse($todo->due_date)->format('d M Y');
+    $pesan = "*Reminder Todo Grup*\n\n" .
+             "Todo: *{$todo->title}*\n" .
+             "Deskripsi: {$todo->description}\n" .
+             "Waktu: {$dueDate}\n\n" .
+             "Jangan lupa Brok";
+
+    // ID grup WhatsApp, bisa dari .env atau setting lain
+    $groupPhone = "120363416593633510"; // contoh: '872468237asd-6281218xxxxxx'
+
+    $result = $this->sendMessageGroup($groupPhone, $pesan);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Reminder berhasil dikirim ke grup.',
+        'result' => $result
+    ]);
+}
+
     public function kirimReminderTodo()
 {
     $today = now()->format('Y-m-d');
@@ -167,6 +191,34 @@ class TodoController extends Controller
 
         
     }
+
+    public function sendMessageGroup($groupPhone, $message)
+    {
+        $curl = curl_init();
+        $token = "39UkEbGICVD68BAzSR8pi6cpQYRdjhydk6n8prXg9a4fWVv5Mjgye9y";
+        $secretKey = "cojhYlSM";
+        $accessKey = $token.'.'.$secretKey;
+        $data = [
+            'phone' => $groupPhone,
+            'message' => $message,
+            'isGroup' => 'true'
+        ];
+    
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: $accessKey",
+        ]);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_URL,  "https://bdg.wablas.com/api/send-message");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    
+        $result = curl_exec($curl);
+        curl_close($curl);
+    
+        return $result;
+    } 
 
 
 

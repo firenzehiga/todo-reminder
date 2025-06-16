@@ -19,10 +19,7 @@ class AdminController extends Controller
     // Show specific user details
     public function showUser(User $user)
     {
-        $user->load(['todos' => function($query) {
-            $query->latest()->limit(10);
-        }]);
-
+        $user->setRelation('todos', $user->todos()->latest()->limit(10)->get());
         // Simple stats - langsung query
         $stats = [
             'total_todos' => $user->todos()->count(),
