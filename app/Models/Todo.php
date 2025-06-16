@@ -16,6 +16,7 @@ class Todo extends Model
         'priority',
         'status',
         'due_date',
+        'extra_phones', // Simpan sebagai JSON/string    
     ];
 
     protected $casts = [

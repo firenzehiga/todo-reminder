@@ -25,6 +25,9 @@ class TodoController extends Controller
             'priority' => 'required|in:low,medium,high',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
+            'extra_phones' => 'array',
+            'extra_phones.*' => 'nullable|string|max:20',
+            
         ]);
     
         $user = Auth::user();
@@ -35,6 +38,8 @@ class TodoController extends Controller
             'description' => $request->description,
             'priority' => $request->priority,
             'due_date' => $request->due_date,
+            'extra_phones' => json_encode(array_filter($request->extra_phones)), // filter kosong
+
         ]);
     
         // Format tanggal jika ada
@@ -53,6 +58,12 @@ class TodoController extends Controller
         // Kirim pesan ke nomor WhatsApp user (pastikan field telepon ada di tabel users)
         $this->sendMessage($user->telepon, $message);
     
+        // Kirim reminder ke nomor tambahan (jika ada)
+    $extraPhones = array_filter($request->extra_phones ?? []);
+    foreach ($extraPhones as $phone) {
+        $this->sendMessage($phone, $message);
+    }
+
         return redirect()->back()->with('success', 'Todo berhasil ditambahkan!');
     }
     // Update todo
@@ -156,6 +167,14 @@ class TodoController extends Controller
         }
 
         $this->sendMessage($todo->user->telepon, $pesan);
+        
+        // Kirim ke nomor tambahan jika ada
+        $extraPhones = json_decode($todo->extra_phones, true) ?? [];
+        foreach ($extraPhones as $phone) {
+            if ($phone) {
+                $this->sendMessage($phone, $pesan);
+            }
+        }
     }
 
     return response('Reminder todo selesai dijalankan.', 200);

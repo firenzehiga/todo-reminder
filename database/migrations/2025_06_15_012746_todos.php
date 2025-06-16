@@ -13,11 +13,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
-            
+            $table->enum('priority', ['low', 'medium', 'high'])->default('medium');    
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->date('due_date')->nullable();
             $table->json('tags')->nullable();
+            $table->text('extra_phones')->nullable(); // simpan sebagai JSON/string
             $table->timestamps();
         });
     }

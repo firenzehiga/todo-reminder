@@ -286,7 +286,7 @@
     <!-- Add Todo Modal -->
     <div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Tambah Todo Baru</h3>
                     <form method="POST" action="{{ route('todos.store') }}">
@@ -295,18 +295,18 @@
                             <div>
                                 <label for="title" class="block text-sm font-medium text-gray-700">Judul</label>
                                 <input type="text" name="title" id="title" required
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500">
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
                             </div>
                             <div>
                                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                                 <textarea name="description" id="description" rows="3"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
                                     required></textarea>
                             </div>
                             <div>
                                 <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
                                 <select name="priority" id="priority" required
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500">
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
                                     <option value="low">Low</option>
                                     <option value="medium" selected>Medium</option>
                                     <option value="high">High</option>
@@ -315,7 +315,21 @@
                             <div>
                                 <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date</label>
                                 <input type="date" name="due_date" id="due_date" required
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500">
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nomor WhatsApp Lain</label>
+                                <div id="phone-inputs">
+                                    <div class="flex gap-2 mb-2">
+                                        <input type="text" name="extra_phones[]"
+                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
+                                            placeholder="081234567890">
+                                        <button type="button" onclick="addPhoneInput()"
+                                            class="bg-blue-500 text-white px-2 rounded transition duration-150 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="mt-6 flex justify-end space-x-3">
@@ -333,8 +347,20 @@
             </div>
         </div>
     </div>
-
     <script>
+        function addPhoneInput() {
+            const container = document.getElementById('phone-inputs');
+            const div = document.createElement('div');
+            div.className = "flex gap-2 mb-2";
+            div.innerHTML = `
+        <input type="text" name="extra_phones[]" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="081234567890">
+<button type="button" onclick="this.parentNode.remove()"
+    class="bg-red-500 text-white px-2 rounded transition duration-150 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+    -
+</button>    `;
+            container.appendChild(div);
+        }
+
         function openAddModal() {
             document.getElementById('addModal').classList.remove('hidden');
         }
