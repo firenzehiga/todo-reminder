@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-100">
         <!-- Navigation -->
         <nav class="bg-white shadow-sm border-b">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,11 +24,15 @@
                             class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Dashboard
                         </a>
+                        <a href="{{ route('admin.users') }}"
+                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
+                            Kelola User
+                        </a>
                         <a href="{{ route('admin.todos') }}"
                             class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Semua Todo
                         </a>
-                        <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                        <span class="text-sm text-gray-700 font-bold">Hi, {{ Auth::user()->name }}</span>
                         <button onclick="confirmLogout()"
                             class="text-sm text-red-600 hover:text-red-800 px-3 py-2 rounded-md">
                             Logout
@@ -160,7 +164,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                     <a href="{{ route('admin.users.show', $user) }}"
                                                         class="text-blue-600 hover:text-blue-900 mr-3">
-                                                        Detail
+                                                        <i class="fas fa-eye"></i>
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.users.delete', $user) }}"
                                                         class="inline"
@@ -168,7 +172,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="text-red-600 hover:text-red-900">
-                                                            Hapus
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 </td>
@@ -202,10 +206,10 @@
                                                     <span>{{ $user->created_at->format('d M Y') }}</span>
                                                     <span>{{ $user->todos()->count() }} todo</span>
                                                 </div>
-                                                <div class="flex space-x-2">
+                                                <div class="space-x-2">
                                                     <a href="{{ route('admin.users.show', $user) }}"
                                                         class="text-blue-600 hover:text-blue-900 text-xs">
-                                                        Detail
+                                                        <i class="fas fa-eye"></i>
                                                     </a>
                                                     <form method="POST"
                                                         action="{{ route('admin.users.delete', $user) }}" class="inline"
@@ -214,8 +218,7 @@
                                                         @method('DELETE')
                                                         <button type="submit"
                                                             class="text-red-600 hover:text-red-900 text-xs">
-                                                            Hapus
-                                                        </button>
+                                                            🗑️ </button>
                                                     </form>
                                                 </div>
                                             </div>

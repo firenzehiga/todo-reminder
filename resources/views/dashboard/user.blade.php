@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-100">
         <!-- Navigation -->
-        <nav class="bg-white shadow-sm border-b">
+        <nav class="bg-white shadow-md border-b">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <!-- Logo & Brand -->
@@ -20,11 +20,15 @@
 
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-4">
+                        <a href="{{ route('dashboard') }}"
+                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
+                            Dashboard
+                        </a>
                         <a href="{{ route('todos.index') }}"
                             class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Kelola Todo
                         </a>
-                        <span class="text-sm text-gray-700">Halo, {{ Auth::user()->name }}</span>
+                        <span class="text-sm text-gray-700 font-bold">Halo, {{ Auth::user()->name }}</span>
                         <button onclick="confirmLogout()"
                             class="text-sm text-red-600 hover:text-red-800 px-3 py-2 rounded-md">
                             Logout
@@ -67,7 +71,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <div class="px-3 py-2 text-sm text-gray-600 border-b">
+                        <div class="px-3 py-2 text-sm text-gray-600 border-b font-bold">
                             Halo, {{ Auth::user()->name }}
                         </div>
                         <a href="{{ route('dashboard') }}"
@@ -91,7 +95,7 @@
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <div class="px-4 py-6 sm:px-0">
                 <!-- Welcome Card -->
-                <div class="bg-white overflow-hidden shadow-sm rounded-lg mb-6">
+                <div class="bg-white overflow-hidden shadow-md rounded-lg mb-6">
                     <div class="p-6">
                         <h1 class="text-2xl font-bold text-gray-900 mb-2">
                             Selamat Datang, {{ Auth::user()->name }}! 👋
@@ -108,7 +112,7 @@
 
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                    <div class="bg-white overflow-hidden shadow-md rounded-lg">
                         <div class="p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
@@ -129,7 +133,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                    <div class="bg-white overflow-hidden shadow-md rounded-lg">
                         <div class="p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
@@ -149,7 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                    <div class="bg-white overflow-hidden shadow-md rounded-lg">
                         <div class="p-6">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
@@ -172,7 +176,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Today's Todos -->
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                    <div class="bg-white overflow-hidden shadow-md rounded-lg">
                         <div class="p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Todo Hari Ini</h2>
                             @if ($todayTodos->count() > 0)
@@ -204,7 +208,7 @@
                     </div>
 
                     <!-- Recent Activity -->
-                    <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                    <div class="bg-white overflow-hidden shadow-md rounded-lg">
                         <div class="p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Todo Terbaru</h2>
                             @if ($recentTodos->count() > 0)

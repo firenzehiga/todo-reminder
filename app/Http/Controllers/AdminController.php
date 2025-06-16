@@ -53,4 +53,43 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'User berhasil dihapus!');
     }
+
+    // Delete single todo
+    public function deleteTodo(Todo $todo)
+    {
+        $userName = $todo->user->name;
+        $todoTitle = $todo->title;
+        
+        $todo->delete();
+
+        return redirect()->back()->with('success', "Todo '{$todoTitle}' dari {$userName} berhasil dihapus!");
+    }
+
+    // Delete all todos
+    public function deleteAllTodos()
+    {
+        $totalTodos = Todo::count();
+        
+        if ($totalTodos === 0) {
+            return redirect()->back()->with('error', 'Tidak ada todo untuk dihapus!');
+        }
+        
+        Todo::truncate(); // Hapus semua data todo
+        
+        return redirect()->back()->with('success', "Berhasil menghapus {$totalTodos} todo!");
+    }
+
+    // Delete todos by user
+    public function deleteUserTodos(User $user)
+    {
+        $totalTodos = $user->todos()->count();
+        
+        if ($totalTodos === 0) {
+            return redirect()->back()->with('error', "User {$user->name} tidak memiliki todo untuk dihapus!");
+        }
+        
+        $user->todos()->delete();
+        
+        return redirect()->back()->with('success', "Berhasil menghapus {$totalTodos} todo dari {$user->name}!");
+    }
 }

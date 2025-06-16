@@ -49,6 +49,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('admin.users.show');
     Route::get('/todos', [AdminController::class, 'todos'])->name('admin.todos');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+    // Todo management routes
+    Route::delete('/todos/{todo}', [AdminController::class, 'deleteTodo'])->name('admin.todos.delete');
+    Route::delete('/todos', [AdminController::class, 'deleteAllTodos'])->name('admin.todos.deleteAll');
+    Route::delete('/users/{user}/todos', [AdminController::class, 'deleteUserTodos'])->name('admin.users.todos.delete');
 });
 
 Route::get('/reminder/todo', [TodoController::class, 'kirimReminderTodo']);

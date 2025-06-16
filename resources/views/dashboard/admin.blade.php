@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-100">
         <!-- Navigation -->
         <nav class="bg-white shadow-sm border-b">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,6 +20,10 @@
 
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-4">
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
+                            Dashboard
+                        </a>
                         <a href="{{ route('admin.users') }}"
                             class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Kelola User
@@ -28,7 +32,7 @@
                             class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
                             Semua Todo
                         </a>
-                        <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                        <span class="text-sm text-gray-700 font-bold">Hi, {{ Auth::user()->name }}</span>
                         <button onclick="confirmLogout()"
                             class="text-sm text-red-600 hover:text-red-800 px-3 py-2 rounded-md">
                             Logout
@@ -72,7 +76,7 @@
 
                     <div class="space-y-2">
                         <div class="px-3 py-2 text-sm text-gray-600 border-b">
-                            {{ Auth::user()->name }}
+                            Hi, {{ Auth::user()->name }}
                         </div>
                         <a href="{{ route('admin.dashboard') }}"
                             class="block px-3 py-2 text-sm text-primary-600 bg-primary-50 rounded-md">
