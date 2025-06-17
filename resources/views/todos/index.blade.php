@@ -284,7 +284,7 @@
     </div>
 
     <!-- Add Todo Modal -->
-    <div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden">
+    <div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
                 <div class="p-6">
@@ -306,7 +306,7 @@
                             <div>
                                 <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
                                 <select name="priority" id="priority" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
+                                    class="mt-1 block w-full border p-1 border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
                                     <option value="low">Low</option>
                                     <option value="medium" selected>Medium</option>
                                     <option value="high">High</option>
@@ -315,17 +315,18 @@
                             <div>
                                 <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date</label>
                                 <input type="date" name="due_date" id="due_date" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
+                                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Nomor WhatsApp Lain</label>
-                                <div id="phone-inputs">
+                                <div id="phone-inputs" class="max-h-48 overflow-y-auto pr-1">
                                     <div class="flex gap-2 mb-2">
                                         <input type="text" name="extra_phones[]"
-                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
-                                            placeholder="081234567890">
+                                            class="mt-1 p-2
+                                             block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
+                                            placeholder="cth: 081234567890">
                                         <button type="button" onclick="addPhoneInput()"
-                                            class="bg-blue-500 text-white px-2 rounded transition duration-150 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                            class="bg-blue-500 text-white px-3 rounded transition duration-150 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
                                             +
                                         </button>
                                     </div>
@@ -353,9 +354,9 @@
             const div = document.createElement('div');
             div.className = "flex gap-2 mb-2";
             div.innerHTML = `
-        <input type="text" name="extra_phones[]" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="081234567890">
+        <input type="text" name="extra_phones[]" class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="081234567890">
 <button type="button" onclick="this.parentNode.remove()"
-    class="bg-red-500 text-white px-2 rounded transition duration-150 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+    class="bg-red-500 text-white px-3 rounded transition duration-150 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
     -
 </button>    `;
             container.appendChild(div);
