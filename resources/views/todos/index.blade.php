@@ -354,7 +354,7 @@
             const div = document.createElement('div');
             div.className = "flex gap-2 mb-2";
             div.innerHTML = `
-        <input type="text" name="extra_phones[]" class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="081234567890">
+        <input type="text" name="extra_phones[]" class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="cth: 081234567890">
 <button type="button" onclick="this.parentNode.remove()"
     class="bg-red-500 text-white px-3 rounded transition duration-150 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
     -
