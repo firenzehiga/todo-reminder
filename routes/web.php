@@ -6,6 +6,7 @@ use App\Http\Controllers\TodoController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Livewire\TodoTable;
 
 // Home redirect
 Route::get('/', function () {

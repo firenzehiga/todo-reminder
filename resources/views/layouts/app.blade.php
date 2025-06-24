@@ -74,6 +74,7 @@
             }
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-50 font-sans antialiased">
@@ -153,6 +154,7 @@
             }
         });
     </script>
+    @livewireScripts
 </body>
 
 </html>
