@@ -105,6 +105,19 @@
     </div>
 
     <script>
+        @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Logout Berhasil!',
+                text: '{{ session("success") }}',
+                timer: 1200,
+                showConfirmButton: false
+            });
+        </script>
+        @endif
+    </script>
+    <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -151,16 +164,8 @@
                 })
                 .then(data => {
                     if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Login Berhasil!',
-                            text: 'Selamat datang kembali 👋',
-                            timer: 2000,
-                            toast: true,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = data.redirect;
-                        });
+                        window.location.href = data.redirect;
+
                     } else {
                         throw new Error(data.message || 'Login gagal');
                     }

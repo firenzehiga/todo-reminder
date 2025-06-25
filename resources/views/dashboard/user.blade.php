@@ -249,14 +249,27 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Berhasil!',
+            text: '{{ session("success") }}',
+            timer: 500,
+            showConfirmButton: false,
+
+        });
+    </script>
+    @endif
+
 
     <script>
-        function confirmLogout() {
-            Swal.fire({
-                title: 'Yakin mau logout?',
-                text: 'Anda akan keluar dari aplikasi',
-                icon: 'question',
-                showCancelButton: true,
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Yakin mau logout?',
+            text: 'Anda akan keluar dari aplikasi',
+            icon: 'question',
+            showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, Logout',
@@ -287,15 +300,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Logout Berhasil!',
-                                    text: 'Sampai jumpa lagi! 👋',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    window.location.href = data.redirect;
-                                });
+                                window.location.href = data.redirect;
                             }
                         })
                         .catch(error => {

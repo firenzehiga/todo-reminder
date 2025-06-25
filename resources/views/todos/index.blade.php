@@ -143,15 +143,27 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Nomor WhatsApp Lain</label>
+                                
+                                <!-- Tombol Pilih Kontak -->
+                                <div class="flex gap-2 mb-2">
+                                    <button type="button" id="selectContactBtn" onclick="selectFromContacts()" 
+                                        class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm flex items-center">
+                                        📞 Pilih dari Kontak
+                                    </button>
+                                    <button type="button" onclick="addPhoneInput()" 
+                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                                        ➕ Tambah Manual
+                                    </button>
+                                </div>
+                                
                                 <div id="phone-inputs" class="max-h-48 overflow-y-auto pr-1">
                                     <div class="flex gap-2 mb-2">
                                         <input type="text" name="extra_phones[]"
-                                            class="mt-1 p-2
-                                             block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
+                                            class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
                                             placeholder="cth: 081234567890">
-                                        <button type="button" onclick="addPhoneInput()"
-                                            class="bg-blue-500 text-white px-3 rounded transition duration-150 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                                            +
+                                        <button type="button" onclick="removePhone(this)"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">
+                                            ×
                                         </button>
                                     </div>
                                 </div>
@@ -162,9 +174,13 @@
                                 class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm">
                                 Batal
                             </button>
-                            <button type="submit"
-                                class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm">
-                                Simpan
+                            <button type="submit" id="submitBtn"
+                                class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm flex items-center justify-center">
+                                <span id="btnText">Simpan</span>
+                                <svg id="btnSpinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                </svg>
                             </button>
                         </div>
                     </form>
@@ -172,28 +188,139 @@
             </div>
         </div>
     </div>
-    <script>
-        function addPhoneInput() {
-            const container = document.getElementById('phone-inputs');
-            const div = document.createElement('div');
-            div.className = "flex gap-2 mb-2";
-            div.innerHTML = `
-        <input type="text" name="extra_phones[]" class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500" placeholder="cth: 081234567890">
-<button type="button" onclick="this.parentNode.remove()"
-    class="bg-red-500 text-white px-3 rounded transition duration-150 hover:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
-    -
-</button>    `;
-            container.appendChild(div);
-        }
 
+    <script>
+        // Fungsi untuk mengecek apakah browser mendukung Contact Picker API
+        function checkContactSupport() {
+            if ('contacts' in navigator && 'ContactsManager' in window) {
+                return true;
+            } else {
+                // Sembunyikan tombol jika tidak support
+                const btn = document.getElementById('selectContactBtn');
+                if (btn) {
+                    btn.style.display = 'none';
+                }
+                return false;
+            }
+        }
+        
+        // Fungsi untuk membuka Contact Picker
+        async function selectFromContacts() {
+            // Cek support browser
+            if (!checkContactSupport()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tidak Didukung',
+                    text: 'Browser Anda tidak mendukung fitur pilih kontak. Silakan input manual.',
+                });
+                return;
+            }
+        
+            try {
+                // Minta akses kontak
+                const contacts = await navigator.contacts.select(['name', 'tel'], {
+                    multiple: true // Bisa pilih beberapa kontak sekaligus
+                });
+                
+                // Proses setiap kontak yang dipilih
+                contacts.forEach(contact => {
+                    if (contact.tel && contact.tel.length > 0) {
+                        const phone = formatPhoneNumber(contact.tel[0]);
+                        const name = contact.name ? contact.name[0] : 'Kontak';
+                        addPhoneToList(phone, name);
+                    }
+                });
+                
+                if (contacts.length > 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: `${contacts.length} kontak berhasil ditambahkan`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+                
+            } catch (error) {
+                console.log('User cancelled or error:', error);
+                // User membatalkan atau error lain
+            }
+        }
+        
+        // Fungsi untuk format nomor telepon
+        function formatPhoneNumber(phone) {
+            // Hapus karakter non-digit
+            let cleaned = phone.replace(/\D/g, '');
+            
+            // Jika dimulai dengan 0, ganti dengan 62
+            if (cleaned.startsWith('0')) {
+                cleaned = '62' + cleaned.substring(1);
+            }
+            // Jika belum ada kode negara, tambahkan 62
+            else if (!cleaned.startsWith('62')) {
+                cleaned = '62' + cleaned;
+            }
+            
+            return cleaned;
+        }
+        
+        // Fungsi untuk menambahkan nomor ke list input
+        function addPhoneToList(phone, name = '') {
+            const phoneInputs = document.getElementById('phone-inputs');
+            const newInputHTML = `
+                <div class="flex gap-2 mb-2">
+                    <input type="text" name="extra_phones[]" value="${phone}"
+                        class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
+                        placeholder="${name}">
+                    <button type="button" onclick="removePhone(this)" 
+                        class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">
+                        ×
+                    </button>
+                </div>
+            `;
+            phoneInputs.insertAdjacentHTML('beforeend', newInputHTML);
+        }
+        
+        // Fungsi untuk tambah input manual
+        function addPhoneInput() {
+            const phoneInputs = document.getElementById('phone-inputs');
+            const newInputHTML = `
+                <div class="flex gap-2 mb-2">
+                    <input type="text" name="extra_phones[]"
+                        class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm bg-white focus:ring-primary-500 focus:border-primary-500"
+                        placeholder="cth: 081234567890">
+                    <button type="button" onclick="removePhone(this)" 
+                        class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm">
+                        ×
+                    </button>
+                </div>
+            `;
+            phoneInputs.insertAdjacentHTML('beforeend', newInputHTML);
+        }
+        
+        // Fungsi untuk hapus input nomor
+        function removePhone(button) {
+            button.parentElement.remove();
+        }
+        
+        // Kondisi button submit saat di klik
+        document.querySelector('form[action="{{ route('todos.store') }}"]').addEventListener('submit', function() {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.classList.remove('bg-primary-600', 'hover:bg-primary-700');
+            btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            document.getElementById('btnText').textContent = 'Menyimpan...';
+            document.getElementById('btnSpinner').classList.remove('hidden');
+        });
+        
         function openAddModal() {
             document.getElementById('addModal').classList.remove('hidden');
         }
-
+        
         function closeAddModal() {
             document.getElementById('addModal').classList.add('hidden');
         }
-
+        
         function toggleTodo(todoId) {
             fetch(`/todos/${todoId}/toggle`, {
                     method: 'POST',
@@ -209,12 +336,7 @@
                     }
                 });
         }
-
-        function editTodo(todoId) {
-            // Simple redirect to edit - bisa dikembangkan jadi modal
-            alert('Edit feature - bisa dikembangkan dengan modal atau halaman terpisah');
-        }
-
+        
         function confirmLogout() {
             Swal.fire({
                 title: 'Yakin mau logout?',
@@ -227,7 +349,6 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Show loading
                     Swal.fire({
                         title: 'Logging out...',
                         text: 'Mohon tunggu sebentar',
@@ -238,8 +359,7 @@
                             Swal.showLoading();
                         }
                     });
-
-                    // Perform logout
+        
                     fetch('{{ route('logout') }}', {
                             method: 'POST',
                             headers: {
@@ -273,7 +393,7 @@
                 }
             });
         }
-
+        
         function kirimReminderGroup(todoId) {
             Swal.fire({
                 title: 'Kirim Reminder ke Grup?',
@@ -295,7 +415,7 @@
                             Swal.showLoading();
                         }
                     });
-
+        
                     fetch(`/todos/${todoId}/reminder-group`, {
                             method: 'POST',
                             headers: {
@@ -320,6 +440,11 @@
                 }
             });
         }
-    </script>
-
+        
+        // Cek support saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            checkContactSupport();
+        });
+        </script>
+    
 @endsection

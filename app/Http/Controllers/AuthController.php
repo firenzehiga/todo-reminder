@@ -29,6 +29,8 @@ class AuthController extends Controller
             if (Auth::attempt($credentials, $request->boolean('remember'))) {
                 $request->session()->regenerate();
 
+                session()->flash('success', 'Login berhasil! Selamat datang, ' . Auth::user()->name . '!');
+
                 // Return JSON response untuk AJAX
                 return response()->json([
                     'success' => true,
@@ -140,6 +142,8 @@ class AuthController extends Controller
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
+
+            session()->flash('success', 'Logout berhasil!');
 
             return response()->json([
                 'success' => true,
