@@ -25,7 +25,7 @@ class TodoController extends Controller
             'priority' => 'required|in:low,medium,high',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
-            'extra_phones' => 'array',
+            'extra_phones' => 'nullable|array',
             'extra_phones.*' => 'nullable|string|max:20',
             
         ]);
@@ -38,7 +38,7 @@ class TodoController extends Controller
             'description' => $request->description,
             'priority' => $request->priority,
             'due_date' => $request->due_date,
-            'extra_phones' => json_encode(array_filter($request->extra_phones)), // filter kosong
+            'extra_phones' => json_encode(array_filter($request->extra_phones ?? [])), // filter kosong
 
         ]);
     
@@ -110,6 +110,43 @@ class TodoController extends Controller
 
         $todo->update([
             'status' => $todo->status === 'completed' ? 'pending' : 'completed'
+        ]);
+
+        return response()->json(['success' => true, 'status' => $todo->status]);
+    }
+
+    // API endpoint untuk mengambil todos
+    public function apiIndex()
+    {
+        $todos = Auth::user()->todos()->latest()->get()->map(function($todo) {
+            return [
+                'id' => $todo->id,
+                'title' => $todo->title,
+                'description' => $todo->description,
+                'status' => $todo->status,
+                'priority' => $todo->priority,
+                'due_date' => $todo->due_date ? $todo->due_date->format('Y-m-d') : null,
+                'created_at' => $todo->created_at->toDateTimeString(),
+                'updated_at' => $todo->updated_at->toDateTimeString(),
+            ];
+        });
+
+        return response()->json($todos);
+    }
+
+    // Update status untuk Kanban board
+    public function updateStatus(Request $request, Todo $todo)
+    {
+        if ($todo->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:pending,in_progress,completed'
+        ]);
+
+        $todo->update([
+            'status' => $request->status
         ]);
 
         return response()->json(['success' => true, 'status' => $todo->status]);

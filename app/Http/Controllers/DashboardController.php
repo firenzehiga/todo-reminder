@@ -14,10 +14,28 @@ class DashboardController extends Controller
     public function user()
     {
         $user = Auth::user();
+    
+        // Stats sederhana untuk progress counter
+        $today = now()->toDateString();
+        $thisWeek = now()->startOfWeek();
+        
+        $stats = [
+            'today_completed' => Todo::where('user_id', auth()->id())
+                ->whereDate('updated_at', $today)
+                ->where('status', 'completed')
+                ->count(),
+            'today_total' => Todo::where('user_id', auth()->id())
+                ->whereDate('due_date', $today)
+                ->count(),
+            'week_completed' => Todo::where('user_id', auth()->id())
+                ->where('updated_at', '>=', $thisWeek)
+                ->where('status', 'completed')
+                ->count(),
+        ];
+    
+        // Data yang sudah ada sebelumnya
         $totalTodos = $user->todos()->count();
         $recentTodos = $user->todos()->latest()->limit(5)->get();
-
-        // Get user's todos with various filters
         $todos = $user->todos()->latest()->get();
         $pendingTodos = $user->pendingTodos()->count();
         $completedTodos = $user->completedTodos()->count();
@@ -26,24 +44,22 @@ class DashboardController extends Controller
             ->whereDate('due_date', today())
             ->where('status', '!=', 'completed')
             ->get();
-
-        // Get upcoming todos (next 7 days)
+    
         $upcomingTodos = $user->todos()
             ->whereBetween('due_date', [today(), today()->addDays(7)])
             ->where('status', '!=', 'completed')
             ->orderBy('due_date')
             ->get();
-
-        // Get recent completed todos
+    
         $recentCompleted = $user->completedTodos()
             ->latest('updated_at')
             ->limit(5)
             ->get();
-
-        // Weekly progress data for chart
+    
         $weeklyProgress = $this->getWeeklyProgress($user);
-
+    
         return view('dashboard.user', compact(
+            'stats', // Tambahkan ini
             'todos',
             'pendingTodos', 
             'recentTodos',
@@ -51,7 +67,6 @@ class DashboardController extends Controller
             'overdueTodos',
             'todayTodos',
             'totalTodos',
-            
             'upcomingTodos',
             'recentCompleted',
             'weeklyProgress'

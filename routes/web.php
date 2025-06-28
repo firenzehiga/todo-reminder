@@ -41,6 +41,10 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/todos/{todo}/toggle', [TodoController::class, 'toggle'])->name('todos.toggle');
     Route::post('/todos/{todo}/reminder-group', [TodoController::class, 'kirimReminderGroup'])
     ->name('todos.reminder-group');
+    
+    // API routes for AJAX calls
+    Route::get('/api/todos', [TodoController::class, 'apiIndex'])->name('api.todos.index');
+    Route::post('/todos/{todo}/status', [TodoController::class, 'updateStatus'])->name('todos.status');
 });
 
 // Admin routes

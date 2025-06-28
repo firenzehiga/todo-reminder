@@ -2,110 +2,13 @@
 
 @section('content')
     <div class="min-h-screen bg-gray-100">
-        <!-- Navigation -->
-        <nav class="bg-white shadow-sm border-b">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <!-- Logo & Brand -->
-                    <div class="flex items-center">
-                        <div class="h-8 w-8 bg-red-500 rounded-full flex items-center justify-center">
-                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                                </path>
-                            </svg>
-                        </div>
-                        <span class="ml-3 text-xl font-semibold text-gray-900">Admin Panel</span>
-                    </div>
-
-                    <!-- Desktop Navigation -->
-                    <div class="hidden md:flex items-center space-x-4">
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
-                            Dashboard
-                        </a>
-                        <a href="{{ route('admin.users') }}"
-                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
-                            Kelola User
-                        </a>
-                        <a href="{{ route('admin.todos') }}"
-                            class="text-sm text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md">
-                            Semua Todo
-                        </a>
-                        <span class="text-sm text-gray-700 font-bold">Hi, {{ Auth::user()->name }}</span>
-                        <button onclick="confirmLogout()"
-                            class="text-sm text-red-600 hover:text-red-800 px-3 py-2 rounded-md">
-                            Logout
-                        </button>
-                    </div>
-
-                    <!-- Mobile menu button -->
-                    <div class="md:hidden flex items-center">
-                        <button onclick="toggleMobileMenu()"
-                            class="text-gray-700 hover:text-primary-600 focus:outline-none focus:text-primary-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation Menu -->
-            <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 md:hidden">
-                <div class="p-4">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center">
-                            <div class="h-8 w-8 bg-red-500 rounded-full flex items-center justify-center">
-                                <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <span class="ml-3 text-lg font-semibold text-gray-900">Admin Menu</span>
-                        </div>
-                        <button onclick="toggleMobileMenu()" class="text-gray-700 hover:text-primary-600">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="px-3 py-2 text-sm text-gray-600 border-b">
-                            {{ Auth::user()->name }}
-                        </div>
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
-                            Dashboard
-                        </a>
-                        <a href="{{ route('admin.users') }}"
-                            class="block px-3 py-2 text-sm text-primary-600 bg-primary-50 rounded-md">
-                            Kelola User
-                        </a>
-                        <a href="{{ route('admin.todos') }}"
-                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
-                            Semua Todo
-                        </a>
-                        <button onclick="confirmLogout()"
-                            class="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
-                            Logout
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
         <!-- Main Content -->
         <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
             <div class="px-4 py-6 sm:px-0">
                 <!-- Back Button -->
                 <div class="mb-6">
                     <a href="{{ route('admin.users') }}"
-                        class="text-primary-600 hover:text-primary-800 text-sm font-medium">
+                        class="text-blue-600 hover:text-blue-700 text-sm font-medium">
                         ← Kembali ke Daftar User
                     </a>
                 </div>
@@ -115,7 +18,7 @@
                     <div class="p-6">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="h-16 w-16 bg-primary-500 rounded-full flex items-center justify-center mr-4">
+                                <div class="h-16 w-16 bg-blue-700 rounded-full flex items-center justify-center mr-4">
                                     <span class="text-white text-xl font-medium">
                                         {{ substr($user->name, 0, 1) }}
                                     </span>
